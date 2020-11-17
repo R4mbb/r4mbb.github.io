@@ -58,9 +58,9 @@ export class Wave {
 			prevY = this.points[i].y;
 		}
 
-		ctx.quadraticCurveTo(prevX, prevY);
-		ctx.quadraticCurveTo(this.stageWidth, this.stageHeight);
-		ctx.quadraticCurveTo(this.points[0].x, this.stageHeight);
+		ctx.lineTo(prevX, prevY);
+		ctx.lineTo(this.stageWidth, this.stageHeight);
+		ctx.lineTo(this.points[0].x, this.stageHeight);
 		ctx.fill();
 		ctx.closePath();
 	}
