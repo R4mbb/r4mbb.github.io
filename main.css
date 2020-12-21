@@ -8,63 +8,120 @@ html, body {
 	margin: 0;
 	padding: 0;
 	height: 100%;
+
+	color: #E3EB99;
 }
+
+span {
+	padding: 0;
+	margin: 0;
+}
+
 
 .main_left {
 	width: 91%;
 	height: 100%;
-	background-color: #EDECEB;
+	background-color: #000000;
 	float: left;
+
+	text-align: center;
 }
 
 .nav_right {
 	width: 9%;
 	height: 100%;
-	background-color: #EDECEB;
+	background-color: #000000;
 	float: left;
-	border-left: 0.5px solid black;
+	border-left: 0.5px solid #EDECEB;
 }
 
 .m-top_bar {
 	width: 100%;
 	height: 15%;
-	background-color: #EDECEB;
-	border-bottom: 0.5px solid black;
+	background-color: #000000;
+	border-bottom: 0.5px solid #EDECEB;
 }
 
 .m-section_area {
 	width: 100%;
 	height: 85%;
-	background-color: #EDECEB;
+	background-color: #000000;
 }
 
 .m-section_left {
+	margin: 0;
+	padding: 0;
 	width: 15%;
 	height: 100%;
-	background-color: #EDECEB;
+	background-color: #000000;
 	float: left;
-	border-bottom: 0.5px solid black;
-	border-right: 0.5px solid black;
+	text-align: center;
+	border-bottom: 0.5px solid #EDECEB;
+	border-right: 0.5px solid #EDECEB;
+}
+
+.m-section_left > .rotate {
+	white-space: nowrap;
+	font-size: 11vw;
+	font-size: 11vh;
+
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 17%;
+	box-sizing: border-box;
+
+	position: relative;
+	top: 450px;
+
+	transform: rotate(-90deg);
 }
 
 .m-section_right {
 	width: 85%;
 	height: 100%;
-	background-color: #EDECEB;
-	background-image: url(./img/grid_img.png);
+	float: left;
+	border-bottom: 0.5px solid #EDECEB;
+	overflow : hidden;
+}
+
+.m-section_img {
+	width: 85%;
+	height: 100%;
+	background-image: url(./img/moon.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	float: left;
-	border-bottom: 0.5px solid black;
+
+  	transform: scale(0.5);
+	transition: all 0.5s ease-in-out;
+}
+
+.m-section_img:hover {
+	opacity: 1;
+  	transform: scale(1.2);
 }
 
 .n-item {
 	width: 100%;
 	height: 50%;
 	display: block;
-	border-bottom: 0.5px solid black;
+	border-bottom: 0.5px solid #EDECEB;
 }
 .n-item:hover {
-	background-color: #2AD789;
+	background-color: #ECFE4C;
+}
+
+
+.title-div {
+	text-align: center;
+	color: #ECFE4C;
+
+	font-size: 15px;
+}
+
+.title-name {
+	font-size: 5em;
+	text-align: center;
+	vertical-align: middle;
 }
