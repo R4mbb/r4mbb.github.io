@@ -1,0 +1,40 @@
+.m-section_left > .text_1 {
+	font-size: 10vmin;
+	line-height: 9vmin;
+}
+
+.m-section_img {
+	width: 85%;
+	height: 100%;
+	background-image: url(./img/moon.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+
+  	transform: scale(0.8);
+	transition: all 0.5s ease-in-out;
+}
+
+.m-section_img:hover {
+  	transform: scale(1.2);
+}
+
+.n-item {
+	width: 100%;
+	height: 50%;
+	display: block;
+	text-align: center;
+	border-bottom: 0.5px solid #EDECEB;
+}
+.n-item:hover {
+	background-color: #ECFE4C;
+	color: #000000;
+}
+
+.n-item > .text_1 {
+	width: 100%;
+	height: 0;
+	padding-top: calc(30 / 9000 * 100%);
+	font-size: 6vmin;
+	line-height: 5vmin;
+}

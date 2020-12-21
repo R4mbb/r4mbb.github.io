@@ -1,0 +1,34 @@
+.m-section_left > .text_1 {
+	font-size: 9vmin;
+	line-height: 6vmin;
+}
+
+.m-section_img {
+	width: 100%;
+	height: 0;
+	padding-top: calc(608 / 900 * 100%);
+	background-image: url(./img/solarsystem.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+
+.n-item {
+	width: 100%;
+	height: 50%;
+	display: block;
+	text-align: center;
+	border-bottom: 0.5px solid #EDECEB;
+}
+.n-item:hover {
+	background-color: #ECFE4C;
+	color: #000000;
+}
+
+.n-item > .text_1 {
+	width: 100%;
+	height: 0;
+	padding-top: calc(30 / 9000 * 100%);
+	font-size: 6vmin;
+	line-height: 5vmin;
+}
