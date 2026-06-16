@@ -1,9 +1,9 @@
 # About
-This is the demo site for [Fuwari](https://github.com/saicaca/fuwari).
 
-::github{repo="saicaca/fuwari"}
+보안과 취미를 기록하는 개인 블로그입니다.
 
-> ### Sources of images used in this site
-> - [Unsplash](https://unsplash.com/)
-> - [星と少女](https://www.pixiv.net/artworks/108916539) by [Stella](https://www.pixiv.net/users/93273965)
-> - [Rabbit - v1.4 Showcase](https://civitai.com/posts/586908) by [Rabbit_YourMajesty](https://civitai.com/user/Rabbit_YourMajesty)
+This is a personal blog that records security and hobbies.
+
+- **Author**: R4mbb
+- **GitHub**: [github.com/R4mbb](https://github.com/R4mbb)
+- **Email**: [R4mbb@proton.me](mailto:R4mbb@proton.me)

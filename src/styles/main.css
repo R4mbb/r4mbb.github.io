@@ -2,13 +2,26 @@
 
 @layer components {
     .card-base {
-        @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--card-bg)] transition;
+        @apply overflow-hidden transition;
+        position: relative;
+        background: var(--pixel-border);
+        clip-path: var(--pixel-clip);
+    }
+    /* Pixel border: card-base bg = border color, an inset inner layer = card bg.
+       Only the outer 2px shows through → a stepped border that follows the clip. */
+    .card-base::before {
+        content: "";
+        position: absolute;
+        inset: 2px;
+        z-index: -1;
+        background: var(--card-bg);
+        clip-path: var(--pixel-clip);
     }
     h1, h2, h3, h4, h5, h6, p, a, span, li, ul, ol, blockquote, code, pre, table, th, td, strong {
         @apply transition;
     }
     .card-shadow {
-        @apply drop-shadow-[0_2px_4px_rgba(0,0,0,0.005)]
+        filter: drop-shadow(3px 3px 0 var(--pixel-shadow));
     }
     .expand-animation {
         @apply relative before:ease-out before:transition active:bg-none hover:before:bg-[var(--btn-plain-bg-hover)] active:before:bg-[var(--btn-plain-bg-active)] z-0
@@ -21,7 +34,9 @@
         @apply transition rounded-md p-1.5 -m-1.5 expand-animation;
     }
     .float-panel {
-        @apply top-[5.25rem] rounded-[var(--radius-large)] overflow-hidden bg-[var(--float-panel-bg)] transition shadow-xl dark:shadow-none
+        @apply top-[5.25rem] overflow-hidden bg-[var(--float-panel-bg)] transition;
+        clip-path: var(--pixel-clip);
+        filter: drop-shadow(3px 3px 0 var(--pixel-shadow));
     }
     .float-panel-closed {
         @apply -translate-y-1 opacity-0 pointer-events-none
@@ -32,7 +47,8 @@
 
     .btn-card {
         @apply transition flex items-center justify-center bg-[var(--card-bg)] hover:bg-[var(--btn-card-bg-hover)]
-        active:bg-[var(--btn-card-bg-active)]
+        active:bg-[var(--btn-card-bg-active)];
+        clip-path: var(--pixel-clip-sm);
     }
     .btn-card.disabled {
         @apply pointer-events-none text-black/10 dark:text-white/10
@@ -52,7 +68,8 @@
     }
     .btn-regular {
         @apply transition flex items-center justify-center bg-[var(--btn-regular-bg)] hover:bg-[var(--btn-regular-bg-hover)] active:bg-[var(--btn-regular-bg-active)]
-        text-[var(--btn-content)] dark:text-white/75
+        text-[var(--btn-content)] dark:text-white/75;
+        clip-path: var(--pixel-clip-sm);
     }
 
     .link-underline {
@@ -95,7 +112,8 @@
 
     .meta-icon {
         @apply w-8 h-8 transition rounded-md flex items-center justify-center bg-[var(--btn-regular-bg)]
-        text-[var(--btn-content)] mr-2
+        text-[var(--btn-content)] mr-2;
+        clip-path: var(--pixel-clip-sm);
     }
     .with-divider {
         @apply before:content-['/'] before:ml-1.5 before:mr-1.5 before:text-[var(--meta-divider)] before:text-sm
@@ -105,7 +123,8 @@
     .btn-regular-dark {
         @apply flex items-center justify-center
         bg-[oklch(0.45_0.01_var(--hue))] hover:bg-[oklch(0.50_0.01_var(--hue))] active:bg-[oklch(0.55_0.01_var(--hue))]
-        dark:bg-[oklch(0.30_0.02_var(--hue))] dark:hover:bg-[oklch(0.35_0.03_var(--hue))] dark:active:bg-[oklch(0.40_0.03_var(--hue))]
+        dark:bg-[oklch(0.30_0.02_var(--hue))] dark:hover:bg-[oklch(0.35_0.03_var(--hue))] dark:active:bg-[oklch(0.40_0.03_var(--hue))];
+        clip-path: var(--pixel-clip-sm);
     }
     .btn-regular-dark.success {
         @apply bg-[oklch(0.75_0.14_var(--hue))] dark:bg-[oklch(0.75_0.14_var(--hue))]
@@ -149,4 +168,39 @@
         color: var(--codeblock-bg);
     }
   }
+}
+
+/* Pixel/dot theme: headings use the larger Galmuri14 pixel face */
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Galmuri14", "Galmuri11", ui-sans-serif, sans-serif;
+}
+
+/* Pixel/dot theme: opt-in crisp (non-blurred) rendering for pixel-art images.
+   Add class="pixelated" to an <img> for retro upscaling; left off avatars so
+   real photos aren't degraded. */
+.pixelated {
+    image-rendering: pixelated;
+}
+
+/* Pixel/dot theme: square off third-party widgets (search UI, scrollbars) too */
+:root {
+    --pagefind-ui-border-radius: 0;
+    --pagefind-ui-image-border-radius: 0;
+    --os-handle-border-radius: 0;
+    --os-track-border-radius: 0;
+
+    /* Pixel "rounded" corners: stepped notches instead of hard right angles.
+       --pixel-clip = 2-step (cards / panels), --pixel-clip-sm = 1-step (buttons / icons) */
+    --pixel-clip: polygon(
+        0 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0,
+        calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
+        100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%,
+        8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px)
+    );
+    --pixel-clip-sm: polygon(
+        0 4px, 4px 4px, 4px 0,
+        calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+    );
 }

@@ -1,0 +1,36 @@
+/**
+ * Galmuri pixel fonts — only the faces this blog actually uses, woff2-only.
+ * Galmuri © Lee Minseo, SIL Open Font License 1.1 (https://galmuri.quiple.dev).
+ * Source files copied from the `galmuri` npm package into ./fonts.
+ *   - Galmuri11      : body / UI text (regular + bold)
+ *   - Galmuri14      : headings (larger pixel face)
+ *   - GalmuriMono11  : code blocks / inline code
+ */
+@font-face {
+	font-family: "Galmuri11";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("./fonts/Galmuri11.woff2") format("woff2");
+}
+@font-face {
+	font-family: "Galmuri11";
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("./fonts/Galmuri11-Bold.woff2") format("woff2");
+}
+@font-face {
+	font-family: "Galmuri14";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("./fonts/Galmuri14.woff2") format("woff2");
+}
+@font-face {
+	font-family: "GalmuriMono11";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("./fonts/GalmuriMono11.woff2") format("woff2");
+}
