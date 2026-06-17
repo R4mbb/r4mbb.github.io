@@ -27,16 +27,32 @@
         @apply relative before:ease-out before:transition active:bg-none hover:before:bg-[var(--btn-plain-bg-hover)] active:before:bg-[var(--btn-plain-bg-active)] z-0
         before:absolute before:rounded-[inherit] before:inset-0 before:scale-[0.85] hover:before:scale-100 before:-z-10
     }
+    /* Pixel/dot: the expanding hover "box" (::before bg) follows stepped corners */
+    .expand-animation::before {
+        clip-path: var(--pixel-clip-sm);
+    }
     .link {
         @apply transition rounded-md p-1 -m-1 expand-animation;
     }
     .link-lg {
         @apply transition rounded-md p-1.5 -m-1.5 expand-animation;
     }
+    /* float-panel backs floating INTERACTIVE menus (palette, theme switch, mobile nav, search).
+       CONFIRMED: clip-path here breaks the overlays — palette, dark/light menu and search
+       panel vanish or stop responding. So NO clip-path on float-panel; it stays a squared
+       box with a border + hard shadow. (Stepped corners are for static elements only.) */
     .float-panel {
         @apply top-[5.25rem] overflow-hidden bg-[var(--float-panel-bg)] transition;
-        clip-path: var(--pixel-clip);
-        filter: drop-shadow(3px 3px 0 var(--pixel-shadow));
+        border: 2px solid var(--pixel-border);
+        box-shadow: 3px 3px 0 var(--pixel-shadow);
+    }
+    /* LightDarkSwitch = "card-base float-panel": cancel card-base's clip + ::before frame
+       (the clip would break the menu) so the border above is the only frame. */
+    .card-base.float-panel {
+        clip-path: none;
+    }
+    .card-base.float-panel::before {
+        display: none;
     }
     .float-panel-closed {
         @apply -translate-y-1 opacity-0 pointer-events-none
@@ -56,6 +72,7 @@
     .btn-plain {
         @apply transition relative flex items-center justify-center bg-none
         text-black/75 hover:text-[var(--primary)] dark:text-white/75 dark:hover:text-[var(--primary)];
+        clip-path: var(--pixel-clip-sm);
         &:not(.scale-animation) {
             @apply hover:bg-[var(--btn-plain-bg-hover)] active:bg-[var(--btn-plain-bg-active)]
         }
@@ -180,6 +197,29 @@ h1, h2, h3, h4, h5, h6 {
    real photos aren't degraded. */
 .pixelated {
     image-rendering: pixelated;
+}
+
+/* Pixel/dot theme: stepped-corner utilities */
+.pixel-corners {
+    clip-path: var(--pixel-clip);
+}
+.pixel-corners-sm {
+    clip-path: var(--pixel-clip-sm);
+}
+
+/* Pixel/dot theme: stepped corners on content boxes (images, embeds, code blocks, license) */
+.custom-md img,
+.custom-md iframe,
+.expressive-code .frame,
+.license-container {
+    clip-path: var(--pixel-clip);
+}
+
+/* Pixel/dot theme: stepped corners on search bar & result items */
+#search-bar,
+#search-bar-inside,
+#search-panel a {
+    clip-path: var(--pixel-clip-sm);
 }
 
 /* Pixel/dot theme: square off third-party widgets (search UI, scrollbars) too */

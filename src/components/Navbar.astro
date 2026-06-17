@@ -72,36 +72,31 @@ function switchTheme() {
     }
 }
 
-function loadButtonScript() {
-    let switchBtn = document.getElementById("scheme-switch");
-    if (switchBtn) {
-        switchBtn.onclick = function () {
-            switchTheme()
-        };
-    }
+// Bind the navbar toggle buttons with direct `.onclick` assignments.
+// Astro re-executes this hoisted <script> after every swup page swap, so this runs again
+// on each navigation. `.onclick =` is an *idempotent* assignment (it replaces, never
+// stacks), so the buttons keep working across navigations without piling up handlers.
+// (A previous `document.addEventListener("click", …)` had no guard, so swup re-execution
+// stacked one extra toggle listener per navigation — the palette then toggled an even
+// number of times per click and cancelled itself out: it opened then instantly re-closed,
+// showing no panel and no console error. Element `.onclick` also fires at the button
+// before any document-level outside-close listener, matching the working Svelte panels.)
+function bindNavbarButtons() {
+    const schemeBtn = document.getElementById("scheme-switch");
+    if (schemeBtn) schemeBtn.onclick = switchTheme;
 
-    let settingBtn = document.getElementById("display-settings-switch");
-    if (settingBtn) {
-        settingBtn.onclick = function () {
-            let settingPanel = document.getElementById("display-setting");
-            if (settingPanel) {
-                settingPanel.classList.toggle("float-panel-closed");
-            }
-        };
-    }
+    const settingBtn = document.getElementById("display-settings-switch");
+    if (settingBtn) settingBtn.onclick = () => {
+        document.getElementById("display-setting")?.classList.toggle("float-panel-closed");
+    };
 
-    let menuBtn = document.getElementById("nav-menu-switch");
-    if (menuBtn) {
-        menuBtn.onclick = function () {
-            let menuPanel = document.getElementById("nav-menu-panel");
-            if (menuPanel) {
-                menuPanel.classList.toggle("float-panel-closed");
-            }
-        };
-    }
+    const menuBtn = document.getElementById("nav-menu-switch");
+    if (menuBtn) menuBtn.onclick = () => {
+        document.getElementById("nav-menu-panel")?.classList.toggle("float-panel-closed");
+    };
 }
 
-loadButtonScript();
+bindNavbarButtons();
 </script>
 
 {import.meta.env.PROD && <script is:inline define:vars={{scriptUrl: url('/pagefind/pagefind.js')}}>
