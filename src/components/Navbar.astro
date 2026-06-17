@@ -46,50 +46,44 @@ let links: NavBarLink[] = navBarConfig.links.map(
         <div class="flex">
             <!--<SearchPanel client:load>-->
             <Search client:only="svelte"></Search>
-            {!siteConfig.themeColor.fixed && <DisplaySettings client:only="svelte"></DisplaySettings>}
+            {!siteConfig.themeColor.fixed && (
+                    <button aria-label="Display Settings" class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90" id="display-settings-switch">
+                        <Icon name="material-symbols:palette-outline" class="text-[1.25rem]"></Icon>
+                    </button>
+            )}
             <LightDarkSwitch client:only="svelte"></LightDarkSwitch>
             <button aria-label="Menu" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 md:!hidden" id="nav-menu-switch">
                 <Icon name="material-symbols:menu-rounded" class="text-[1.25rem]"></Icon>
             </button>
         </div>
         <NavMenuPanel links={links}></NavMenuPanel>
+        <DisplaySettings client:only="svelte"></DisplaySettings>
     </div>
 </div>
 
 <script>
-function switchTheme() {
-    if (localStorage.theme === 'dark') {
-        document.documentElement.classList.remove('dark');
-        localStorage.theme = 'light';
-    } else {
-        document.documentElement.classList.add('dark');
-        localStorage.theme = 'dark';
-    }
+// Toggle the navbar dropdowns (theme palette + mobile menu) with ONE delegated listener on
+// `document`, registered exactly once (guarded by a window flag). This is robust against:
+//   - swup: hoisted scripts re-run on every navigation; the guard prevents stacking a
+//     duplicate listener (an earlier un-guarded addEventListener stacked one per nav, so the
+//     palette toggled an even number of times per click and cancelled out — no panel, no
+//     error), and a document-level listener survives swup replacing the page content.
+//   - content-script extensions (e.g. translation add-ons) that clone/replace DOM nodes and
+//     drop a node's `.onclick` — delegation lives on `document`, not on the button node.
+// NOTE: the theme switch (#scheme-switch) is handled entirely by LightDarkSwitch's own
+// Svelte on:click, so it is intentionally NOT toggled here (avoids double-handling).
+if (!(window as any).__navbarTogglesBound) {
+    (window as any).__navbarTogglesBound = true;
+    document.addEventListener("click", (e) => {
+        const t = e.target as Element | null;
+        if (!t || typeof t.closest !== "function") return;
+        if (t.closest("#display-settings-switch")) {
+            document.getElementById("display-setting")?.classList.toggle("float-panel-closed");
+        } else if (t.closest("#nav-menu-switch")) {
+            document.getElementById("nav-menu-panel")?.classList.toggle("float-panel-closed");
+        }
+    });
 }
-
-// Bind the navbar toggle buttons with direct `.onclick` assignments.
-// Astro re-executes this hoisted <script> after every swup page swap, so this runs again
-// on each navigation. `.onclick =` is an *idempotent* assignment (it replaces, never
-// stacks), so the buttons keep working across navigations without piling up handlers.
-// (A previous `document.addEventListener("click", …)` had no guard, so swup re-execution
-// stacked one extra toggle listener per navigation — the palette then toggled an even
-// number of times per click and cancelled itself out: it opened then instantly re-closed,
-// showing no panel and no console error. Element `.onclick` also fires at the button
-// before any document-level outside-close listener, matching the working Svelte panels.)
-function bindNavbarButtons() {
-    const schemeBtn = document.getElementById("scheme-switch");
-    if (schemeBtn) schemeBtn.onclick = switchTheme;
-
-    // NOTE: the palette (#display-settings-switch) is no longer toggled here — it now lives
-    // inside the DisplaySettings Svelte component with its own on:click, matching the
-    // LightDarkSwitch pattern that works reliably even with content-script extensions.
-    const menuBtn = document.getElementById("nav-menu-switch");
-    if (menuBtn) menuBtn.onclick = () => {
-        document.getElementById("nav-menu-panel")?.classList.toggle("float-panel-closed");
-    };
-}
-
-bindNavbarButtons();
 </script>
 
 {import.meta.env.PROD && <script is:inline define:vars={{scriptUrl: url('/pagefind/pagefind.js')}}>
